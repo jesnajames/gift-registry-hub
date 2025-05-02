@@ -45,6 +45,7 @@ export type GiftRow = {
 // Type definition for user profiles (assuming a 'profiles' table exists or will be created)
 export type ProfileRow = {
     id: string; // uuid, matches auth.users.id
+    name: string | null;
     username: string | null;
     full_name: string | null;
     avatar_url: string | null;

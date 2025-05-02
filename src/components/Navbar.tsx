@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import {supabase} from '../lib/supabase';
 
-const Navbar = () => {
+interface NavbarProps {
+  currentUser: any;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -53,12 +60,41 @@ const Navbar = () => {
               </a> */}
             </div>
           </div>
+          
           <div className="hidden md:flex items-center">
             {loading ? (
               <div className="animate-pulse h-8 w-24 bg-gray-200 rounded-md"></div>
             ) : user ? (
               <>
-                <span className="text-sm text-gray-600 mr-4">Hi, {user.email}</span>
+              <button
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="flex items-center"
+              >
+                <img
+                  className="h-8 w-8 rounded-full"
+                  src="/default-avatar.png"
+                  alt="Profile"
+                /><span className="text-sm text-gray-600 mr-4">Hi, {user.email}</span>
+
+              </button>
+              
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsProfileMenuOpen(false)}
+                  >
+                    My Profile
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
                 <button onClick={handleSignOut} className="btn-outline">
                   Sign Out
                 </button>

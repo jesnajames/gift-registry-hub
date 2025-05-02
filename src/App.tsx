@@ -12,6 +12,7 @@ import { eventService } from './services/eventService';
 import { giftService } from './services/giftService';
 import { userService } from './services/userService'; // Import userService
 import { supabase } from './lib/supabase';
+import {ProfilePage} from './pages/ProfilePage';
 import AuthPage from './pages/AuthPage';
 
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
@@ -434,12 +435,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar
-        currentUser={currentUser}
+      <Navbar currentUser={currentUser}
       />
       <Routes>
-           <Route path="/auth" element={<AuthPage />} />
-         </Routes>
+      <Route path="/profile" element={<ProfilePage currentUser={currentUser}/>} />
+      <Route path="/auth" element={<AuthPage />} />
+      </Routes>
 
       <main className="container mx-auto px-4 py-8">
         {renderContent()}
